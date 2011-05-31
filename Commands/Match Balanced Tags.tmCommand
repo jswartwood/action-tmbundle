@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+page = STDIN.read
+
+page.gsub!(/&lt;%--.*?--%&gt;/m, '')
+page.gsub!(/.*?(&lt;[^\s&gt;]+).*?(\/?\&gt;).*?(&lt;[^\s&gt;]+).*?(\/?\&gt;).*?/m, '\1\2\3\4')
+
+page.gsub!(/&lt;/m, '&amp;lt;')
+page.gsub!(/&gt;/m, '&amp;gt;&lt;br/&gt;')
+
+puts page
+</string>
+	<key>fallbackInput</key>
+	<string>document</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>name</key>
+	<string>Match Balanced Tags</string>
+	<key>output</key>
+	<string>showAsHTML</string>
+	<key>scope</key>
+	<string>text.html</string>
+	<key>uuid</key>
+	<string>C4C5ECA4-93FF-4F7D-A4B3-5B07C431E0AB</string>
+</dict>
+</plist>
