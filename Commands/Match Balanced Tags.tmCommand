@@ -33,16 +33,54 @@ tags.each_index do |i|
 			good[i] = true
 			good[tagStack.pop] = true
 		else
-			unsure[i] = true
+			bad[i] = true
 		end
 	else
 		tagStack.push(i)
 	end
 end
 
+print '&lt;style&gt;'
+print '.tag {margin:6px 0;padding:8px 20px;-webkit-box-shadow:1px 1px 3px #222;box-shadow:1px 1px 3px #222;}'
+print '.good {background-color:#8f8;}'
+print '.bad {background-color:#f88;}'
+print '.unsure {background-color:#ff8;}'
+print '.dim {display:none;}'
+print 'label {margin-right:20px;}'
+print '* {color:#262626;text-shadow: 1px 1px 1px rgba(46, 40, 15, .25);}'
+print '&lt;/style&gt;'
+
+print '&lt;input type="checkbox" checked=checked id="good_check" value="good"/&gt; '
+print '&lt;label for="good_check"&gt;Good&lt;/label&gt; '
+print '&lt;input type="checkbox" checked=checked id="bad_check" value="bad"/&gt; '
+print '&lt;label for="bad_check"&gt;Bad&lt;/label&gt; '
+print '&lt;input type="checkbox" checked=checked id="unsure_check" value="unsure"/&gt; '
+print '&lt;label for="unsure_check"&gt;Unsure&lt;/label&gt;'
+
+print '&lt;script type="text/javascript"&gt;'
+print 'function dim(c) {'
+print 'var els = document.getElementsByClassName(c);'
+print 'for (var i = 0, j = els.length; i &lt; j; i++) {'
+print 'els[i].className += " dim";'
+print '}}'
+print 'function unDim(c) {'
+print 'var els = document.getElementsByClassName(c);'
+print 'for (var i = 0, j = els.length; i &lt; j; i++) {'
+print 'els[i].className = els[i].className.replace(" dim", "");'
+print '}}'
+print 'var ins = document.getElementsByTagName("input");'
+print 'for (var i = 0, j = ins.length; i &lt; j; i++) {'
+print 'ins[i].addEventListener("change", function() {'
+print 'if (this.checked) {unDim(this.value);} else {dim(this.value);}'
+print '});}'
+print '&lt;/script&gt;'
+
 tags.each_index do |i|
-	puts good[i] ? 'good' : unsure[i] ? 'unsure' : 'bad'
-	puts tags[i].gsub(/&lt;/, '&amp;lt;').gsub(/&gt;/, '&amp;gt;&lt;br/&gt;')
+	print '&lt;p class="tag '
+	print good[i] ? 'good' : bad[i] ? 'bad' : 'unsure'
+	print '"&gt;'
+	print tags[i].gsub(/&lt;/, '&amp;lt;').gsub(/&gt;/, '&amp;gt;&lt;br/&gt;')
+	puts '&lt;/p&gt;'
 end
 </string>
 	<key>fallbackInput</key>
