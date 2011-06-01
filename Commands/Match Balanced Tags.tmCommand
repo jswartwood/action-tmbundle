@@ -8,7 +8,8 @@
 	<string>#!/usr/bin/env ruby
 page = STDIN.read
 
-page.gsub!(/&lt;%--.*?--%&gt;/m, '')
+page.gsub!(/&lt;%.*?%&gt;/m, '')
+
 page.gsub!(/.*?(&lt;[^\s&gt;]+).*?(\/?\&gt;).*?(&lt;[^\s&gt;]+).*?(\/?\&gt;).*?/m, '\1\2\3\4')
 
 tagStack = []
