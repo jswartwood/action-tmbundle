@@ -11,10 +11,38 @@ page = STDIN.read
 page.gsub!(/&lt;%--.*?--%&gt;/m, '')
 page.gsub!(/.*?(&lt;[^\s&gt;]+).*?(\/?\&gt;).*?(&lt;[^\s&gt;]+).*?(\/?\&gt;).*?/m, '\1\2\3\4')
 
-page.gsub!(/&lt;/m, '&amp;lt;')
-page.gsub!(/&gt;/m, '&amp;gt;&lt;br/&gt;')
+tagStack = []
+unsure = {}
+bad = {}
+good = {}
 
-puts page
+tags = page.gsub(/&gt;&lt;/m, '&gt; &lt;').split(' ')
+
+def justTagName(str)
+	return str.sub(/.*?&lt;\/?(.*?)&gt;.*?/, '\1')
+end
+
+tags.each_index do |i|
+	tag = tags[i]
+	
+	if tag.include?('/&gt;')
+		good[i] = true
+	elsif tag.include?('&lt;/')
+		if justTagName(tags[tagStack.last]) == justTagName(tag)
+			good[i] = true
+			good[tagStack.pop] = true
+		else
+			unsure[i] = true
+		end
+	else
+		tagStack.push(i)
+	end
+end
+
+tags.each_index do |i|
+	puts good[i] ? 'good' : unsure[i] ? 'unsure' : 'bad'
+	puts tags[i].gsub(/&lt;/, '&amp;lt;').gsub(/&gt;/, '&amp;gt;&lt;br/&gt;')
+end
 </string>
 	<key>fallbackInput</key>
 	<string>document</string>
